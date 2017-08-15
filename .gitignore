@@ -4,6 +4,7 @@
 .project
 .settings
 /config/cookie.php
+/config/params-session.php
 /models/Migration.php
 /phpunit.xml
 /tests/_output/*

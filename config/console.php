@@ -1,6 +1,8 @@
 <?php
-
-$params = require(__DIR__ . '/params.php');
+$params = array_merge(
+    require(__DIR__ . '/params.php'),
+    ['splatnet' => require(__DIR__ . '/params-session.php')]
+);
 $db = require(__DIR__ . '/db.php');
 
 $config = [

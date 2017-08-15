@@ -2,7 +2,8 @@
 all: app
 
 .PHONY: app
-app: vendor config/cookie.php
+app: vendor config/cookie.php config/params-session.php
+	./yii migrate/up
 
 vendor: composer.lock
 	./composer.phar install
@@ -18,3 +19,6 @@ composer.phar:
 
 config/cookie.php:
 	php standalone/cookie.php > $@
+
+config/params-session.php:
+	cp config/params-session.sample.php $@
