@@ -11,10 +11,10 @@ class m170729_070200_mode extends Migration
             'name' => $this->string(64)->notNull()->unique(),
         ]);
         $this->batchInsert('{{%mode}}', [ 'key', 'name' ], [
-            [ 'nawabari',    'Turf War' ],
-            [ 'area',        'Splat Zones' ],
-            [ 'yagura',      'Tower Control' ],
-            [ 'hoko',        'Rainmaker' ],
+            [ 'nawabari',    'ナワバリバトル' ],
+            [ 'area',        'ガチエリア' ],
+            [ 'yagura',      'ガチヤグラ' ],
+            [ 'hoko',        'ガチホコバトル' ],
         ]);
         $this->createTable('{{%lobby}}', [
             'id' => $this->primaryKey(),
@@ -22,10 +22,10 @@ class m170729_070200_mode extends Migration
             'name' => $this->string(64)->notNull()->unique(),
         ]);
         $this->batchInsert('{{%lobby}}', [ 'key', 'name' ], [
-            [ 'regular', 'Regular' ],
-            [ 'ranked', 'Ranked' ],
-            [ 'league', 'League' ],
-            [ 'fest', 'Splatfest' ],
+            [ 'regular', 'レギュラーマッチ' ],
+            [ 'ranked', 'ガチマッチ' ],
+            [ 'league', 'リーグマッチ' ],
+            [ 'fest', 'フェス' ],
         ]);
     }
 

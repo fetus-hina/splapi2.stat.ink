@@ -168,6 +168,20 @@ class Ikaring2 extends Model
     }
     // }}}
 
+    public function downloadImage(string $url) : ?string
+    {
+        $resp = $this->httpRequest($url, 'GET');
+        if (!$resp->isSuccess()) {
+            return false;
+        }
+        $gd = @imagecreatefromstring($resp->getBody());
+        if (!$gd) {
+            return false;
+        }
+        @imagedestroy($gd);
+        return $resp->getBody();
+    }
+
     private function httpRequest(
         $url,
         string $method = 'GET',

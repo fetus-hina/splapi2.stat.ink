@@ -6,6 +6,7 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=7.1.0",
+        "jp3cki/uuid": "^0.1.0",
         "yiisoft/yii2": "~2.0.5",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "zendframework/zend-http": "^2.6"

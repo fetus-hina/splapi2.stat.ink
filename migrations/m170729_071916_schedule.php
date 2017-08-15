@@ -16,7 +16,7 @@ class m170729_071916_schedule extends Migration
             'FOREIGN KEY ([[lobby_id]]) REFERENCES {{%lobby}}([[id]])',
             'FOREIGN KEY ([[mode_id]]) REFERENCES {{%mode}}([[id]])',
         ]);
-        $this->createIndex('ix_lobby_time', '{{%schedule}}', ['lobby_id', 'start_at']);
+        $this->createIndex('ix_schedule_1', '{{%schedule}}', ['lobby_id', 'start_at']);
         $this->createTable("{{%schedule_stage}}", [
             'schedule_id' => $this->integer()->notNull(),
             'stage_id' => $this->integer()->notNull(),
