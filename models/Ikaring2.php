@@ -156,7 +156,7 @@ class Ikaring2 extends Model
             'https://app.splatoon2.nintendo.net/',
             'GET',
             false,
-            ['lang' => 'ja-JP'],
+            ['lang' => 'en-US'],
             null,
             [
                 'Accept' => 'application/json',

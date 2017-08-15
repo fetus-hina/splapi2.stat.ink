@@ -5,25 +5,22 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "stage".
+ * This is the model class for table "lobby".
  *
  * @property integer $id
  * @property string $key
  * @property string $name
- * @property string $image_url
- * @property string $local_path
  *
- * @property ScheduleStage[] $scheduleStages
  * @property Schedule[] $schedules
  */
-class Stage extends \yii\db\ActiveRecord
+class Lobby extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'stage';
+        return 'lobby';
     }
 
     /**
@@ -32,9 +29,9 @@ class Stage extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['key', 'name'], 'required'],
             [['key'], 'string', 'max' => 32],
-            [['name', 'local_path'], 'string', 'max' => 64],
-            [['image_url'], 'string', 'max' => 256],
+            [['name'], 'string', 'max' => 64],
             [['name'], 'unique'],
             [['key'], 'unique'],
         ];
@@ -49,17 +46,7 @@ class Stage extends \yii\db\ActiveRecord
             'id' => 'ID',
             'key' => 'Key',
             'name' => 'Name',
-            'image_url' => 'Image Url',
-            'local_path' => 'Local Path',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getScheduleStages()
-    {
-        return $this->hasMany(ScheduleStage::className(), ['stage_id' => 'id']);
     }
 
     /**
@@ -67,6 +54,6 @@ class Stage extends \yii\db\ActiveRecord
      */
     public function getSchedules()
     {
-        return $this->hasMany(Schedule::className(), ['id' => 'schedule_id'])->viaTable('schedule_stage', ['stage_id' => 'id']);
+        return $this->hasMany(Schedule::className(), ['lobby_id' => 'id']);
     }
 }

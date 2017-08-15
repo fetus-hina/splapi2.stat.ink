@@ -11,8 +11,7 @@ use Yii;
  * @property string $key
  * @property string $name
  *
- * @property League[] $leagues
- * @property Ranked[] $rankeds
+ * @property Schedule[] $schedules
  */
 class Mode extends \yii\db\ActiveRecord
 {
@@ -31,7 +30,7 @@ class Mode extends \yii\db\ActiveRecord
     {
         return [
             [['key', 'name'], 'required'],
-            [['key'], 'string', 'max' => 16],
+            [['key'], 'string', 'max' => 32],
             [['name'], 'string', 'max' => 64],
             [['name'], 'unique'],
             [['key'], 'unique'],
@@ -53,16 +52,8 @@ class Mode extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getLeagues()
+    public function getSchedules()
     {
-        return $this->hasMany(League::className(), ['mode_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRankeds()
-    {
-        return $this->hasMany(Ranked::className(), ['mode_id' => 'id']);
+        return $this->hasMany(Schedule::className(), ['mode_id' => 'id']);
     }
 }

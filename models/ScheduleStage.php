@@ -5,22 +5,22 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "salmon_stage".
+ * This is the model class for table "schedule_stage".
  *
  * @property integer $schedule_id
  * @property integer $stage_id
  *
  * @property Stage $stage
- * @property Salmon $schedule
+ * @property Schedule $schedule
  */
-class SalmonStage extends \yii\db\ActiveRecord
+class ScheduleStage extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'salmon_stage';
+        return 'schedule_stage';
     }
 
     /**
@@ -33,7 +33,7 @@ class SalmonStage extends \yii\db\ActiveRecord
             [['schedule_id', 'stage_id'], 'integer'],
             [['schedule_id', 'stage_id'], 'unique', 'targetAttribute' => ['schedule_id', 'stage_id'], 'message' => 'The combination of Schedule ID and Stage ID has already been taken.'],
             [['stage_id'], 'exist', 'skipOnError' => true, 'targetClass' => Stage::className(), 'targetAttribute' => ['stage_id' => 'id']],
-            [['schedule_id'], 'exist', 'skipOnError' => true, 'targetClass' => Salmon::className(), 'targetAttribute' => ['schedule_id' => 'id']],
+            [['schedule_id'], 'exist', 'skipOnError' => true, 'targetClass' => Schedule::className(), 'targetAttribute' => ['schedule_id' => 'id']],
         ];
     }
 
@@ -61,6 +61,6 @@ class SalmonStage extends \yii\db\ActiveRecord
      */
     public function getSchedule()
     {
-        return $this->hasOne(Salmon::className(), ['id' => 'schedule_id']);
+        return $this->hasOne(Schedule::className(), ['id' => 'schedule_id']);
     }
 }

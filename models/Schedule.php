@@ -5,9 +5,10 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "ranked".
+ * This is the model class for table "schedule".
  *
  * @property integer $id
+ * @property integer $lobby_id
  * @property integer $mode_id
  * @property integer $start_at
  * @property integer $end_at
@@ -15,17 +16,18 @@ use Yii;
  * @property integer $updated_at
  *
  * @property Mode $mode
- * @property RankedStage[] $rankedStages
+ * @property Lobby $lobby
+ * @property ScheduleStage[] $scheduleStages
  * @property Stage[] $stages
  */
-class Ranked extends \yii\db\ActiveRecord
+class Schedule extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'ranked';
+        return 'schedule';
     }
 
     /**
@@ -34,11 +36,12 @@ class Ranked extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mode_id', 'start_at', 'end_at', 'created_at', 'updated_at'], 'required'],
-            [['mode_id', 'start_at', 'end_at', 'created_at', 'updated_at'], 'integer'],
+            [['lobby_id', 'mode_id', 'start_at', 'end_at', 'created_at', 'updated_at'], 'required'],
+            [['lobby_id', 'mode_id', 'start_at', 'end_at', 'created_at', 'updated_at'], 'integer'],
             [['end_at'], 'unique'],
             [['start_at'], 'unique'],
             [['mode_id'], 'exist', 'skipOnError' => true, 'targetClass' => Mode::className(), 'targetAttribute' => ['mode_id' => 'id']],
+            [['lobby_id'], 'exist', 'skipOnError' => true, 'targetClass' => Lobby::className(), 'targetAttribute' => ['lobby_id' => 'id']],
         ];
     }
 
@@ -49,6 +52,7 @@ class Ranked extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'lobby_id' => 'Lobby ID',
             'mode_id' => 'Mode ID',
             'start_at' => 'Start At',
             'end_at' => 'End At',
@@ -68,9 +72,17 @@ class Ranked extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRankedStages()
+    public function getLobby()
     {
-        return $this->hasMany(RankedStage::className(), ['schedule_id' => 'id']);
+        return $this->hasOne(Lobby::className(), ['id' => 'lobby_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getScheduleStages()
+    {
+        return $this->hasMany(ScheduleStage::className(), ['schedule_id' => 'id']);
     }
 
     /**
@@ -78,6 +90,6 @@ class Ranked extends \yii\db\ActiveRecord
      */
     public function getStages()
     {
-        return $this->hasMany(Stage::className(), ['id' => 'stage_id'])->viaTable('ranked_stage', ['schedule_id' => 'id']);
+        return $this->hasMany(Stage::className(), ['id' => 'stage_id'])->viaTable('schedule_stage', ['schedule_id' => 'id']);
     }
 }
