@@ -23,7 +23,7 @@ class m170729_070200_mode extends Migration
         ]);
         $this->batchInsert('{{%lobby}}', [ 'key', 'name' ], [
             [ 'regular', 'レギュラーマッチ' ],
-            [ 'ranked', 'ガチマッチ' ],
+            [ 'gachi', 'ガチマッチ' ],
             [ 'league', 'リーグマッチ' ],
             [ 'fest', 'フェス' ],
         ]);

@@ -1,8 +1,8 @@
 <?php
-
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "schedule".
@@ -36,10 +36,12 @@ class Schedule extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['lobby_id', 'mode_id', 'start_at', 'end_at', 'created_at', 'updated_at'], 'required'],
+            [['lobby_id', 'mode_id', 'start_at', 'end_at'], 'required'],
             [['lobby_id', 'mode_id', 'start_at', 'end_at', 'created_at', 'updated_at'], 'integer'],
-            [['end_at'], 'unique'],
-            [['start_at'], 'unique'],
+            [['lobby_id', 'start_at'], 'unique',
+                'targetAttribute' => ['lobby_id', 'start_at'],
+                'message' => 'The combination of Lobby ID and Start At has already been taken.',
+            ],
             [['mode_id'], 'exist', 'skipOnError' => true, 'targetClass' => Mode::className(), 'targetAttribute' => ['mode_id' => 'id']],
             [['lobby_id'], 'exist', 'skipOnError' => true, 'targetClass' => Lobby::className(), 'targetAttribute' => ['lobby_id' => 'id']],
         ];
@@ -58,6 +60,13 @@ class Schedule extends \yii\db\ActiveRecord
             'end_at' => 'End At',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
         ];
     }
 

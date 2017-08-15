@@ -7,6 +7,8 @@ $db = require(__DIR__ . '/db.php');
 
 $config = [
     'id' => 'basic-console',
+    'language' => 'ja-JP',
+    'timeZone' => 'Asia/Tokyo',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'app\commands',
