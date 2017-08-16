@@ -36,6 +36,9 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'schedule' => 'api/schedule',
+                '' => 'site/index',
+                '<action:[\w-]+>' => 'site/<action>',
             ],
         ],
         'i18n' => [

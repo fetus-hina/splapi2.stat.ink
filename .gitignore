@@ -3,7 +3,9 @@
 .idea
 .project
 .settings
+/.production
 /config/cookie.php
+/config/debug-ips.php
 /config/params-session.php
 /models/Migration.php
 /phpunit.xml
