@@ -1,14 +1,11 @@
 <?php
-
 namespace app\controllers;
 
+use DirectoryIterator;
 use Yii;
-use yii\filters\AccessControl;
+use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
 
 class SiteController extends Controller
 {
@@ -32,5 +29,35 @@ class SiteController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    public function actionLicense()
+    {
+        $it = new DirectoryIterator(Yii::getAlias('@app/licenses'));
+        $third = [];
+        foreach ($it as $entry) {
+            if ($entry->isDot() || !$entry->isFile()) {
+                continue;
+            }
+            $basename = $entry->getBasename();
+            $third[] = (object)[
+                'name' => $basename,
+                'html' => Html::tag(
+                    'pre',
+                    Html::encode(file_get_contents($entry->getPathname()))
+                ),
+            ];
+        }
+        usort(
+            $third,
+            function ($a, $b) {
+                $aName = trim(preg_replace('/[^0-9A-Za-z]+/', ' ', $a->name));
+                $bName = trim(preg_replace('/[^0-9A-Za-z]+/', ' ', $b->name));
+                return strnatcasecmp($aName, $bName);
+            }
+        );
+        return $this->render('license', [
+            'third' => $third,
+        ]);
     }
 }

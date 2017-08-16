@@ -38,6 +38,7 @@ AppAsset::register($this);
           ['label' => 'SPLAPI 1', 'url' => 'https://splapi.fetus.jp/', 'options' => ['target' => '_blank']],
           ['label' => 'stat.ink', 'url' => 'https://stat.ink/'],
           ['label' => 'GitHub', 'url' => 'https://github.com/fetus-hina/splapi2.stat.ink'],
+          ['label' => 'Licenses', 'url' => ['/site/license']],
         ],
       ]) . "\n" ?>
       <?php NavBar::end(); echo "\n" ?>
