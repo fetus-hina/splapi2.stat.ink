@@ -3,6 +3,7 @@ $params = require(__DIR__ . '/params.php');
 $db = require(__DIR__ . '/db.php');
 $config = [
     'id' => 'splapi2-stat-ink',
+    'name' => 'SPLAPI2',
     'language' => 'ja-JP',
     'timeZone' => 'Asia/Tokyo',
     'basePath' => dirname(__DIR__),
@@ -46,6 +47,11 @@ $config = [
                         'app' => 'app.php',
                     ]
                 ],
+            ],
+        ],
+        'assetManager' => [
+            'assetMap' => [
+                'bootstrap.css' => '@web/css/superhero.min.css',
             ],
         ],
     ],

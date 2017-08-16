@@ -2,8 +2,8 @@
 all: app
 
 .PHONY: app
-app: vendor config/cookie.php config/params-session.php
-	./yii migrate/up
+app: vendor config/cookie.php config/params-session.php web/css/superhero.min.css.gz
+	./yii migrate/up --interactive=0
 
 vendor: composer.lock
 	./composer.phar install
@@ -22,3 +22,9 @@ config/cookie.php:
 
 config/params-session.php:
 	cp config/params-session.sample.php $@
+
+%.gz: %
+	gzip -9c < $< > $@
+
+web/css/superhero.min.css:
+	curl -o $@ 'https://bootswatch.com/superhero/bootstrap.min.css'
