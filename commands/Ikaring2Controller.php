@@ -87,16 +87,28 @@ class Ikaring2Controller extends Controller
                 'image_url' => $this->prepareImageUrl((string)($json['image'] ?? '')),
             ]);
             if ($model->image_url) {
-                $model->local_path = $this->downloadImage($ikaring, $model->image_url);
+                $model->local_path = $this->downloadImage($ikaring, 'stage', $model->image_url);
             }
         } else {
+            $model->key = Stage::getKeyById($model->id);
             $imageUrl = $this->prepareImageUrl((string)($json['image'] ?? ''));
             if ($imageUrl != $model->image_url) {
                 if ($imageUrl) {
-                    $model->local_path = $this->downloadImage($ikaring, $model->image_url);
+                    $model->image_url = $imageUrl;
+                    $model->local_path = $this->downloadImage($ikaring, 'stage', $model->image_url);
                 } else {
                     $model->local_path = null;
                 }
+            }
+        }
+        $localPath = Yii::getAlias('@app/web') . '/' . $model->local_path;
+        if ($localPath && file_exists($localPath)) {
+            $webP = preg_replace('/\.(?:png|jpe?g)$/i', '.webp', $localPath);
+            var_dump($webP);
+            var_dump($webP != $localPath);
+            var_dump(!file_exists($webP));
+            if ($webP != $localPath && !file_exists($webP)) {
+                $this->imageConvertToWebP($localPath, $webP);
             }
         }
         return $model->save();
@@ -201,7 +213,6 @@ class Ikaring2Controller extends Controller
         }
         if ($exists != count($stages)) {
             // レコード数が違うので絶対おかしい
-echo $schedule->id . ": レコード数不一致\n";
             ScheduleStage::delete(['schedule_id' => $schedule->id]);
             goto register;
         }
@@ -217,7 +228,6 @@ echo $schedule->id . ": レコード数不一致\n";
             ->count();
         if ($checkCount == $exists) {
             // 変更なし
-echo $schedule->id . ": 変更なし\n";
             return true;
         }
         ScheduleStage::delete(['schedule_id' => $schedule->id]);
@@ -261,10 +271,11 @@ echo $schedule->id . ": 変更なし\n";
         return null;
     }
 
-    private function downloadImage(Ikaring2 $ikaring, string $url) : ?string
+    private function downloadImage(Ikaring2 $ikaring, string $tag, string $url) : ?string
     {
         $fileName = sprintf(
-            '/images/%s.png',
+            '/images/%s/%s.png',
+            rawurlencode($tag),
             Uuid::v5(UuidNS::URL, $url)->formatAsString()
         );
         $localPath = Yii::getAlias('@app/web') . $fileName;
@@ -277,5 +288,21 @@ echo $schedule->id . ": 変更なし\n";
         FileHelper::createDirectory(dirname($localPath));
         file_put_contents($localPath, $binary);
         return $fileName;
+    }
+
+    private function imageConvertToWebP(string $srcPath, string $dstPath) : bool
+    {
+        if (!is_file($srcPath) || !function_exists('imagewebp')) {
+            return false;
+        }
+        if (!$gd = imagecreatefromstring(file_get_contents($srcPath))) {
+            return false;
+        }
+        FileHelper::createDirectory(dirname($dstPath));
+        imagesavealpha($gd, true);
+        imagewebp($gd, $dstPath, 100);
+        imagedestroy($gd);
+        echo "WebP created\n";
+        return true;
     }
 }
