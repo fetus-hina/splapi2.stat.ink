@@ -37,6 +37,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'schedule' => 'api/schedule',
+                'stages' => 'api/stages',
                 '' => 'site/index',
                 '<action:[\w-]+>' => 'site/<action>',
             ],

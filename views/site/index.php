@@ -5,7 +5,7 @@ $this->title = 'SPLAPI2';
 ?>
 <div class="container">
   <h1 style="font-variant:small-caps">SPLAPI2.stat.ink</h1>
-  <p>API version: 1.0</p>
+  <p>API version: 1.1.0</p>
   <hr>
   <h2>Schedule API</h2>
   <p>
@@ -71,4 +71,21 @@ $this->title = 'SPLAPI2';
   <p>
     <code>mode.key</code>は次のいずれか: <code>nawabari</code>, <code>area</code>, <code>yagura</code>, <code>hoko</code>
   </p>
+  <hr>
+  <h2>Stages API</h2>
+  <p>
+    <code>GET https://splapi2.stat.ink/stages</code>
+  </p>
+  <p>
+    ステージの一覧を返します。(application/json)<br>
+    This API will return all stages in JSON format.
+  </p>
+  <pre>
+[
+  {
+    // see Schedule API's stage info
+  },
+  // ... repeat ...
+]
+  </pre>
 </div>

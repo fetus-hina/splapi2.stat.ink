@@ -54,6 +54,25 @@ class ApiController extends Controller
         );
     }
 
+    public function actionStages()
+    {
+        $resp = Yii::$app->response;
+        $resp->format = 'json';
+        return array_map(
+            function (Stage $stage) : array {
+                return [
+                    'splatnet' => $stage->id,
+                    'key' => $stage->key,
+                    'name' => static::nameFormat($stage->name),
+                    'image' => $stage->local_path
+                        ? Url::to('@web' . $stage->local_path, true)
+                        : null,
+                ];
+            },
+            Stage::find()->orderBy(['id' => SORT_ASC])->all()
+        );
+    }
+
     static public function timeFormat(int $time) : array
     {
         $t = (new \DateTimeImmutable())
