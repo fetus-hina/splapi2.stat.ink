@@ -213,7 +213,7 @@ class Ikaring2Controller extends Controller
         }
         if ($exists != count($stages)) {
             // レコード数が違うので絶対おかしい
-            ScheduleStage::delete(['schedule_id' => $schedule->id]);
+            ScheduleStage::deleteAll(['schedule_id' => $schedule->id]);
             goto register;
         }
         // ステージIDを使って引いてみて数が一致すれば正しい
@@ -230,7 +230,7 @@ class Ikaring2Controller extends Controller
             // 変更なし
             return true;
         }
-        ScheduleStage::delete(['schedule_id' => $schedule->id]);
+        ScheduleStage::deleteAll(['schedule_id' => $schedule->id]);
         goto register;
 
         register:
