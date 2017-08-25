@@ -1,4 +1,5 @@
 <?php
+use yii\helpers\Html;
 use yii\helpers\Url;
 
 $this->title = 'SPLAPI2';
@@ -7,12 +8,15 @@ $this->title = 'SPLAPI2';
   <h1 style="font-variant:small-caps">SPLAPI2.stat.ink</h1>
   <p>API version: 1.1.0</p>
   <hr>
-  <h2>Schedule API</h2>
+  <h2 id="schedule-api">
+    <?= Html::encode(Yii::t('app', 'スケジュールAPI')) . "\n" ?>
+  </h2>
   <p>
     <code>GET https://splapi2.stat.ink/schedule</code>
   </p>
   <p>
-    現在から未来にかけてのスケジュール情報を一括で返します。(application/json)
+    <?= Html::encode(Yii::t('app', '現在から未来にかけてのスケジュール情報を一括で返します。')) . "\n" ?>
+    (<?= Html::encode(Yii::t('app', '{mimeType}形式', ['mimeType' => 'application/json'])) ?>)
   </p>
   <pre>
 {
@@ -68,17 +72,40 @@ $this->title = 'SPLAPI2';
   "fest": [] // フェスマッチ用データは現在未サポートなので必ず何も返らない
 }
   </pre>
-  <p>
-    <code>mode.key</code>は次のいずれか: <code>nawabari</code>, <code>area</code>, <code>yagura</code>, <code>hoko</code>
-  </p>
+  <table class="table table-striped table-hover table-bordered" style="width:auto">
+    <thead>
+      <tr>
+        <th><code>mode.key</code></th>
+        <th><?= Html::encode(Yii::t('app', 'ルール')) ?></th>
+      </tr>
+    </thead>
+    <tbody>
+<?php
+$list = [
+  'nawabari' => 'ナワバリバトル',
+  'area'     => 'ガチエリア',
+  'yagura'   => 'ガチヤグラ',
+  'hoko'     => 'ガチホコバトル',
+];
+foreach ($list as $key => $rule):
+?>
+      <tr>
+        <td><code><?= Html::encode($key) ?></code></td>
+        <td><?= Html::encode(Yii::t('app', $rule)) ?></td>
+      </tr>
+<?php endforeach ?>
+    </tbody>
+  </table>
   <hr>
-  <h2>Stages API</h2>
+  <h2>
+    <?= Html::encode(Yii::t('app', 'ステージAPI')) . "\n" ?>
+  </h2>
   <p>
     <code>GET https://splapi2.stat.ink/stages</code>
   </p>
   <p>
-    ステージの一覧を返します。(application/json)<br>
-    This API will return all stages in JSON format.
+    <?= Html::encode(Yii::t('app', 'ステージの一覧を返します。')) . "\n" ?>
+    (<?= Html::encode(Yii::t('app', '{mimeType}形式', ['mimeType' => 'application/json'])) ?>)
   </p>
   <pre>
 [

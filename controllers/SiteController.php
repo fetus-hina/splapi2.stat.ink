@@ -3,12 +3,33 @@ namespace app\controllers;
 
 use DirectoryIterator;
 use Yii;
+use app\models\Language;
 use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\Response;
 
 class SiteController extends Controller
 {
+    public function init()
+    {
+        parent::init();
+        if ($lang = $this->detectLanguage()) {
+            Yii::$app->language = $lang;
+        }
+    }
+
+    private function detectLanguage() : ?string
+    {
+        $request = Yii::$app->request;
+        if ($langCode = $request->get('lang')) {
+            $lang = Language::findOne(['code' => (string)$langCode]);
+            if ($lang) {
+                return $lang->code;
+            }
+        }
+        return null;
+    }
+
     /**
      * @inheritdoc
      */
