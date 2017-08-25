@@ -16,6 +16,7 @@ return [
     'ホッケふ頭' => 'Port Mackerel',
     'ミステリーゾーン' => 'Shifty Station',
     '海女美術大学' => 'Inkblot Art Academy',
+    'マンタマリア号' => 'Manta Maria',
 
     'スケジュールAPI' => 'Schedule API',
     '現在から未来にかけてのスケジュール情報を一括で返します。' => 'This API will return schedules information from the present to the future.',

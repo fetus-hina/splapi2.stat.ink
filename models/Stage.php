@@ -86,6 +86,7 @@ class Stage extends \yii\db\ActiveRecord
             3 => 'chozame',
             4 => 'ama',
             5 => 'kombu',
+            6 => 'manta',
             7 => 'hokke',
             8 => 'tachiuo',
             9999 => 'mystery',
