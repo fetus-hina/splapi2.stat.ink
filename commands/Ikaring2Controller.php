@@ -46,7 +46,7 @@ class Ikaring2Controller extends Controller
         //$json = file_get_contents(
         //    'compress.zlib://' . dirname(__DIR__) . '/database/schedules/201708/20170815T191140+0000.json.gz'
         //);
-        $this->importSchedules($json);
+        $this->importSchedules($ikaring, $json);
     }
 
     private function saveJson(string $kind, string $json, DateTimeInterface $dateTime) : void
@@ -104,9 +104,6 @@ class Ikaring2Controller extends Controller
         $localPath = Yii::getAlias('@app/web') . '/' . $model->local_path;
         if ($localPath && file_exists($localPath)) {
             $webP = preg_replace('/\.(?:png|jpe?g)$/i', '.webp', $localPath);
-            var_dump($webP);
-            var_dump($webP != $localPath);
-            var_dump(!file_exists($webP));
             if ($webP != $localPath && !file_exists($webP)) {
                 $this->imageConvertToWebP($localPath, $webP);
             }
@@ -115,12 +112,12 @@ class Ikaring2Controller extends Controller
         // }}}
     }
 
-    private function importSchedules(string $jsonString) : bool
+    private function importSchedules(Ikaring2 $ikaring, string $jsonString) : bool
     {
         $transaction = Yii::$app->db->beginTransaction();
         $json = Json::decode($jsonString);
         foreach (['regular', 'gachi', 'league'] as $key) {
-            if (!$this->importModeSchedules($key, $json[$key])) {
+            if (!$this->importModeSchedules($ikaring, $key, $json[$key])) {
                 $transaction->rollback();
                 return false;
             }
@@ -129,7 +126,10 @@ class Ikaring2Controller extends Controller
         return true;
     }
 
-    private function importModeSchedules(string $lobbyKey, array $json) : bool
+    private function importModeSchedules(
+        Ikaring2 $ikaring,
+        string $lobbyKey,
+        array $json) : bool
     {
         if (!$lobby = Lobby::findOne(['key' => $lobbyKey])) {
             $this->stderr('Unknown lobby "' . $lobbyKey . "\"\n");
@@ -141,14 +141,17 @@ class Ikaring2Controller extends Controller
         });
 
         foreach ($json as $schedule) {
-            if (!$this->importSchedule($lobby, $schedule)) {
+            if (!$this->importSchedule($ikaring, $lobby, $schedule)) {
                 return false;
             }
         }
         return true;
     }
 
-    private function importSchedule(Lobby $lobby, array $json) : bool
+    private function importSchedule(
+        Ikaring2 $ikaring,
+        Lobby $lobby,
+        array $json) : bool
     {
         $ruleMap = [
             'turf_war' => 'nawabari',
@@ -199,12 +202,16 @@ class Ikaring2Controller extends Controller
             ));
         }
         return $this->importScheduleStages(
+            $ikaring,
             $schedule,
             [$json['stage_a'], $json['stage_b']]
         );
     }
 
-    private function importScheduleStages(Schedule $schedule, array $stages) : bool
+    private function importScheduleStages(
+        Ikaring2 $ikaring,
+        Schedule $schedule,
+        array $stages) : bool
     {
         // すでに存在するレコードをチェックする
         $exists = $schedule->getStages()->count();
@@ -237,7 +244,8 @@ class Ikaring2Controller extends Controller
         foreach ($stages as $stage) {
             if (!$stageModel = Stage::findOne(['id' => $stage['id']])) {
                 $this->stderr("WARNING: stage id " . $stage['id'] . " does not exists.\n");
-                continue;
+                $this->importStage($ikaring, $stage);
+                $stageModel = Stage::findOne(['id' => $stage['id']]);
             }
             $model = Yii::createObject([
                 'class' => ScheduleStage::class,
