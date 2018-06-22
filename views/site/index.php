@@ -8,6 +8,11 @@ $this->title = 'SPLAPI2';
   <h1 style="font-variant:small-caps">SPLAPI2.stat.ink</h1>
   <p>API version: 1.1.0</p>
   <hr>
+  <div class="alert alert-danger" role="alert">
+    This project is abandoned.
+    Use <a href="https://splatoon2.ink/">splatoon2.ink</a>'s API.
+  </div>
+  <hr>
   <h2 id="schedule-api">
     <?= Html::encode(Yii::t('app', 'スケジュールAPI')) . "\n" ?>
   </h2>

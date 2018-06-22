@@ -1,6 +1,10 @@
 splapi2.stat.ink
 ================
 
+This project is abandoned. Use [splatoon2.ink](https://splatoon2.ink/)'s API.
+
+--------
+
 [SPLAPI2](https://splapi2.stat.ink/)
 
 (For Splatoon 1, use [SPLAPI](https://splapi.fetus.jp/))
